@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class IOStreamUtil {
+public final class IOStreamUtil {
 
     private static final int BUFFER_SIZE = 1024;
+
+    private IOStreamUtil() {
+    }
 
     public static void copy(InputStream is, OutputStream os) throws IOException {
         copy(is, os, null);

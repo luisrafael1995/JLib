@@ -1,4 +1,4 @@
-package pt.luisrafael1995.lib.extra;
+package pt.luisrafael1995.lib.text;
 
 import java.math.RoundingMode;
 import java.text.NumberFormat;

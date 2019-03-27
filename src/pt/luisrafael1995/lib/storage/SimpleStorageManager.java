@@ -1,7 +1,7 @@
-package pt.luisrafael1995.lib.jar;
+package pt.luisrafael1995.lib.storage;
 
 import pt.luisrafael1995.lib.extra.ObjectUtil;
-import pt.luisrafael1995.lib.extra.StringUtil;
+import pt.luisrafael1995.lib.text.StringUtil;
 import pt.luisrafael1995.lib.file.FileUtil;
 import pt.luisrafael1995.lib.gson.GsonUtil;
 import pt.luisrafael1995.lib.stream.IOStreamUtil;
