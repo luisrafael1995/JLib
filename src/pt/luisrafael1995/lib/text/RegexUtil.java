@@ -7,6 +7,14 @@ import java.util.regex.Pattern;
 
 public final class RegexUtil {
 
+    private static final String URL_CONTENT_REGEX = "[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+    public static final String HTTP_HTTPS_URL_REGEX = "https?://" + URL_CONTENT_REGEX;
+    public static final String HTTP_URL_REGEX = "http://" + URL_CONTENT_REGEX;
+    public static final String HTTPS_URL_REGEX = "https://" + URL_CONTENT_REGEX;
+    public static final String FTP_URL_REGEX = "ftp://" + URL_CONTENT_REGEX;
+    public static final String FILE_URL_REGEX = "file://" + URL_CONTENT_REGEX;
+    public static final String URL_REGEX = "(https?|ftp|file)://" + URL_CONTENT_REGEX;
+
     private RegexUtil() {
     }
 

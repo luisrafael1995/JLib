@@ -1,10 +1,9 @@
 package pt.luisrafael1995.lib.array;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import pt.luisrafael1995.lib.extra.ObjectUtil;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public final class ArrayUtil {
     private ArrayUtil() {
@@ -1130,5 +1129,93 @@ public final class ArrayUtil {
             return realLength;
         }
         return -1;
+    }
+
+    public static <T> List<T> asList(T[] values) {
+        List<T> list = new ArrayList<>();
+        if (values != null) {
+            list.addAll(Arrays.asList(values));
+        }
+        return list;
+    }
+
+    public static List<Integer> asList(int[] values) {
+        Integer[] array = new Integer[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
+            }
+        }
+        return asList(array);
+    }
+
+    public static List<Short> asList(short[] values) {
+        Short[] array = new Short[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
+            }
+        }
+        return asList(array);
+    }
+
+    public static List<Byte> asList(byte[] values) {
+        Byte[] array = new Byte[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
+            }
+        }
+        return asList(array);
+    }
+
+    public static List<Long> asList(long[] values) {
+        Long[] array = new Long[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
+            }
+        }
+        return asList(array);
+    }
+
+    public static List<Double> asList(double[] values) {
+        Double[] array = new Double[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
+            }
+        }
+        return asList(array);
+    }
+
+    public static List<Float> asList(float[] values) {
+        Float[] array = new Float[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
+            }
+        }
+        return asList(array);
+    }
+
+    public static List<Character> asList(char[] values) {
+        Character[] array = new Character[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
+            }
+        }
+        return asList(array);
+    }
+
+    public static List<Boolean> asList(boolean[] values) {
+        Boolean[] array = new Boolean[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
+            }
+        }
+        return asList(array);
     }
 }
