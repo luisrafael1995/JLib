@@ -1,6 +1,5 @@
 package pt.luisrafael1995.lib.array;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import pt.luisrafael1995.lib.extra.ObjectUtil;
 
 import java.util.*;

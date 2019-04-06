@@ -18,9 +18,8 @@ public final class FormatUtil {
     }
 
     /**
-     *
      * @param bytes amount
-     * @param si true corresponds to bi bytes (1024), false corresponds to regular (1000)
+     * @param si    true corresponds to bi bytes (1024), false corresponds to regular (1000)
      * @return string with the amount of bytes
      */
     public static String bytesLength(long bytes, boolean si) {

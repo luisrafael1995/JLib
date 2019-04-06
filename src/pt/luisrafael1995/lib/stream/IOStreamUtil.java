@@ -201,6 +201,10 @@ public final class IOStreamUtil {
     }
 
 
+    public interface IOStreamCopyListener {
+        void copied(long bytes);
+    }
+
     /**
      * Class that warps writable classes into one
      */
@@ -298,9 +302,5 @@ public final class IOStreamUtil {
             return -1;
         }
 
-    }
-
-    public interface IOStreamCopyListener {
-        void copied(long bytes);
     }
 }

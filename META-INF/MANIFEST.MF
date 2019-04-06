@@ -1,2 +1,9 @@
 Manifest-Version: 1.0
+Created-By: luisrafael1995
+Name: pt/luisrafael1995/lib/
+Sealed: true
+Specification-Title: JLib
+Specification-Version: 0.3.1
+Implementation-Title: pt.luisrafael1995.lib
+Implementation-Version: 00301
 

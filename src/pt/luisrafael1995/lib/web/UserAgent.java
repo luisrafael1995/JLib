@@ -1668,6 +1668,6 @@ public final class UserAgent {
     }
 
     public enum Browser {
-        INTERNET_EXPLORER, FIREFOX, CHROME, SAFARI, OPERA;
+        INTERNET_EXPLORER, FIREFOX, CHROME, SAFARI, OPERA
     }
 }
