@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class RegexUtil {
+public final class Regex {
 
     private static final String URL_CONTENT_REGEX = "[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
     public static final String HTTP_HTTPS_URL_REGEX = "https?://" + URL_CONTENT_REGEX;
@@ -15,7 +15,7 @@ public final class RegexUtil {
     public static final String FILE_URL_REGEX = "file://" + URL_CONTENT_REGEX;
     public static final String URL_REGEX = "(https?|ftp|file)://" + URL_CONTENT_REGEX;
 
-    private RegexUtil() {
+    private Regex() {
     }
 
     public static String[] findAll(String regex, String input) {

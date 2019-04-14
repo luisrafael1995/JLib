@@ -1,12 +1,19 @@
-package pt.luisrafael1995.lib.extra;
+package pt.luisrafael1995.lib.util;
 
-public final class ObjectUtil {
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
-    private ObjectUtil() {
+public final class Extra {
+
+    private Extra() {
     }
 
     public static void sleep(long millis) {
         ignoreExceptions(() -> Thread.sleep(millis));
+    }
+
+    public static void sleep(long duration, TimeUnit unit) {
+        sleep(Optional.of(unit).orElse(TimeUnit.MILLISECONDS).toMillis(duration));
     }
 
     public static void close(AutoCloseable closeable) {
@@ -16,32 +23,22 @@ public final class ObjectUtil {
     public static <T> boolean equals(T obj1, T obj2) {
         boolean bothNull = obj1 == null && obj2 == null;
         boolean bothNotNull = obj1 != null && obj2 != null;
-        boolean bothEquals = bothNotNull && obj1.equals(obj2);
+        boolean bothEquals = bothNotNull && obj1.equals(obj2) && obj2.equals(obj1);
 
         return bothNull || bothEquals;
     }
 
     public static void ignoreExceptions(IgnoreExceptions ignore) {
-        if (ignore != null) {
+        Optional.of(ignore).ifPresent(ignoreExceptions -> {
             try {
-                ignore.ignore();
+                ignoreExceptions.ignore();
             } catch (Exception e) {
-                //e.printStackTrace();
+//                e.printStackTrace();
             }
-        }
-    }
-
-    public static <T> void ifNotNull(T obj, IfNotNull<T> ifNotNull) {
-        if (ifNotNull != null && obj != null) {
-            ifNotNull.ifNotNull(obj);
-        }
+        });
     }
 
     public interface IgnoreExceptions {
         void ignore() throws Exception;
-    }
-
-    public interface IfNotNull<T> {
-        void ifNotNull(T obj);
     }
 }

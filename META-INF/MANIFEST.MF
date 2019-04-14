@@ -3,7 +3,7 @@ Created-By: luisrafael1995
 Name: pt/luisrafael1995/lib/
 Sealed: true
 Specification-Title: JLib
-Specification-Version: 0.3.1
+Specification-Version: 0.3.3
 Implementation-Title: pt.luisrafael1995.lib
-Implementation-Version: 00301
+Implementation-Version: 00303
 

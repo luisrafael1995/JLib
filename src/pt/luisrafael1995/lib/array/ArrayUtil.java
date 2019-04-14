@@ -1,6 +1,6 @@
 package pt.luisrafael1995.lib.array;
 
-import pt.luisrafael1995.lib.extra.ObjectUtil;
+import pt.luisrafael1995.lib.util.Extra;
 
 import java.util.*;
 
@@ -15,7 +15,7 @@ public final class ArrayUtil {
         if (array != null) {
             found = 0;
             for (int i = array.length - 1; i >= 0; i--) {
-                found += ObjectUtil.equals(array[i], value) ? 1 : 0;
+                found += Extra.equals(array[i], value) ? 1 : 0;
             }
         }
         return found;
@@ -208,7 +208,7 @@ public final class ArrayUtil {
     public static <T> int indexOf(T[] array, T value) {
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
-                if (ObjectUtil.equals(array[i], value)) {
+                if (Extra.equals(array[i], value)) {
                     return i;
                 }
             }
@@ -312,7 +312,7 @@ public final class ArrayUtil {
             indexes = new int[count(array, value)];
             int index = 0;
             for (int i = 0; i < array.length && index < indexes.length; i++) {
-                if (ObjectUtil.equals(array[i], value)) {
+                if (Extra.equals(array[i], value)) {
                     indexes[index++] = i;
                 }
             }
@@ -437,7 +437,7 @@ public final class ArrayUtil {
     public static <T> int lastIndexOf(T[] array, T value) {
         if (array != null) {
             for (int i = array.length - 1; i >= 0; i--) {
-                if (ObjectUtil.equals(array[i], value)) {
+                if (Extra.equals(array[i], value)) {
                     return i;
                 }
             }
@@ -574,7 +574,7 @@ public final class ArrayUtil {
     // = = = REPLACE = = =
 
     public static <T> void replace(T[] array, T oldValue, T newValue) {
-        if (array != null && !ObjectUtil.equals(oldValue, newValue)) {
+        if (array != null && !Extra.equals(oldValue, newValue)) {
             int index = indexOf(array, oldValue);
             if (index != -1) {
                 array[index] = newValue;
@@ -657,7 +657,7 @@ public final class ArrayUtil {
     // = = = REPLACE ALL = = =
 
     public static <T> void replaceAll(T[] array, T oldValue, T newValue) {
-        if (array != null && !ObjectUtil.equals(oldValue, newValue)) {
+        if (array != null && !Extra.equals(oldValue, newValue)) {
             for (int index : indexesOf(array, oldValue)) {
                 array[index] = newValue;
             }
@@ -731,7 +731,7 @@ public final class ArrayUtil {
     // = = = REPLACE LAST = = =
 
     public static <T> void replaceLast(T[] array, T oldValue, T newValue) {
-        if (array != null && !ObjectUtil.equals(oldValue, newValue)) {
+        if (array != null && !Extra.equals(oldValue, newValue)) {
             int index = lastIndexOf(array, oldValue);
             if (index != -1) {
                 array[index] = newValue;
