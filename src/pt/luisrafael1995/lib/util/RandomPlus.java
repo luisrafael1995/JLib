@@ -5,7 +5,7 @@ import java.util.Random;
 public class RandomPlus extends Random {
 
     private static final String BadBound = "bound must be positive";
-    private static final String BadFromToRange = "to must be greater than from";
+    private static final String BadFromToRange = "'to' must be greater then 'from'";
 
     private static final RandomPlus INSTANCE = new RandomPlus();
 

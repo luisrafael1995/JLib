@@ -1,6 +1,5 @@
 package pt.luisrafael1995.lib.util;
 
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public final class Extra {
@@ -13,7 +12,8 @@ public final class Extra {
     }
 
     public static void sleep(long duration, TimeUnit unit) {
-        sleep(Optional.of(unit).orElse(TimeUnit.MILLISECONDS).toMillis(duration));
+        unit = unit == null ? TimeUnit.MILLISECONDS : unit;
+        sleep(unit.toMillis(duration));
     }
 
     public static void close(AutoCloseable closeable) {
@@ -29,13 +29,11 @@ public final class Extra {
     }
 
     public static void ignoreExceptions(IgnoreExceptions ignore) {
-        Optional.of(ignore).ifPresent(ignoreExceptions -> {
-            try {
-                ignoreExceptions.ignore();
-            } catch (Exception e) {
-//                e.printStackTrace();
-            }
-        });
+        try {
+            ignore.ignore();
+        } catch (Exception e) {
+//            e.printStackTrace();
+        }
     }
 
     public interface IgnoreExceptions {

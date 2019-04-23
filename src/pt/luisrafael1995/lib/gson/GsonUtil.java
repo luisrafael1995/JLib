@@ -22,4 +22,18 @@ public final class GsonUtil {
             return null;
         }
     }
+
+    public static <T> T getObject(String json, Class<T> c, T orDefault) {
+        T object = getObject(json, c);
+        return object == null ? orDefault : object;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T clone(T object) {
+        return object == null ? null : cast(object, (Class<T>) object.getClass());
+    }
+
+    public static <T, E> E cast(T object, Class<E> c) {
+        return getObject(toJson(object), c);
+    }
 }

@@ -1,5 +1,7 @@
 package pt.luisrafael1995.lib.web;
 
+import pt.luisrafael1995.lib.util.RandomPlus;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -1664,7 +1666,7 @@ public final class UserAgent {
 
     public static String getRandomUserAgent(Browser browser) {
         String[] userAgents = uaMap.get(browser);
-        return userAgents[(int) Math.floor(Math.random() * userAgents.length)];
+        return userAgents[RandomPlus.getInstance().nextInt(0, userAgents.length)];
     }
 
     public enum Browser {
