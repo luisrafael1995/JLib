@@ -17,6 +17,16 @@ public final class Regex {
     public static final String FILE_URL_REGEX = "file://" + URL_CONTENT_REGEX;
     public static final String URL_REGEX = "(https?|ftp|file)://" + URL_CONTENT_REGEX;
 
+    public static final Flags UNIX_LINES = new Flags().unixLines().lock();
+    public static final Flags CASE_INSENSITIVE = new Flags().caseInsensitive().lock();
+    public static final Flags COMMENTS = new Flags().comments().lock();
+    public static final Flags MULTILINE = new Flags().multiline().lock();
+    public static final Flags LITERAL = new Flags().literal().lock();
+    public static final Flags DOTALL = new Flags().dotAll().lock();
+    public static final Flags UNICODE_CASE = new Flags().caseInsensitiveUnicode().lock();
+    public static final Flags CANON_EQ = new Flags().canonicalEquivalence().lock();
+    public static final Flags UNICODE_CHARACTER_CLASS = new Flags().unicodeCharacterClass().lock();
+
     private Regex() {
     }
 
@@ -142,50 +152,56 @@ public final class Regex {
 
     public static class Flags {
 
-        int flag = 0;
+        private transient boolean locked = false;
+        private int flag = 0;
 
         public Flags unixLines() {
-            flag |= Pattern.UNIX_LINES;
+            flag |= locked ? 0 : Pattern.UNIX_LINES;
             return this;
         }
 
         public Flags caseInsensitive() {
-            flag |= Pattern.CASE_INSENSITIVE;
+            flag |= locked ? 0 : Pattern.CASE_INSENSITIVE;
             return this;
         }
 
         public Flags comments() {
-            flag |= Pattern.COMMENTS;
+            flag |= locked ? 0 : Pattern.COMMENTS;
             return this;
         }
 
         public Flags multiline() {
-            flag |= Pattern.MULTILINE;
+            flag |= locked ? 0 : Pattern.MULTILINE;
             return this;
         }
 
         public Flags literal() {
-            flag |= Pattern.LITERAL;
+            flag |= locked ? 0 : Pattern.LITERAL;
             return this;
         }
 
         public Flags dotAll() {
-            flag |= Pattern.DOTALL;
+            flag |= locked ? 0 : Pattern.DOTALL;
             return this;
         }
 
         public Flags caseInsensitiveUnicode() {
-            flag |= Pattern.UNICODE_CASE;
+            flag |= locked ? 0 : Pattern.UNICODE_CASE;
             return this;
         }
 
         public Flags canonicalEquivalence() {
-            flag |= Pattern.CANON_EQ;
+            flag |= locked ? 0 : Pattern.CANON_EQ;
             return this;
         }
 
         public Flags unicodeCharacterClass() {
-            flag |= Pattern.UNICODE_CHARACTER_CLASS;
+            flag |= locked ? 0 : Pattern.UNICODE_CHARACTER_CLASS;
+            return this;
+        }
+
+        private Flags lock() {
+            locked = true;
             return this;
         }
 
