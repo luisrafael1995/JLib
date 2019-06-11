@@ -77,7 +77,7 @@ public final class FileUtil {
 
             try {
                 return file.createNewFile();
-            } catch (Exception e) {
+            } catch (Exception ignore) {
                 for (File folder : createdFolders) {
                     delete(folder);
                 }
@@ -159,7 +159,7 @@ public final class FileUtil {
     public static File canonicalFile(File file) {
         try {
             return file.getCanonicalFile();
-        } catch (Exception e) {
+        } catch (Exception ignore) {
             return file;
         }
     }
@@ -244,8 +244,7 @@ public final class FileUtil {
                         }
                     }
 
-                } catch (Exception e) {
-                    // nothing
+                } catch (Exception ignore) {
                 }
 
                 File newParent = filterCaseSensitiveFile(parent, true, ignoreParentNames);

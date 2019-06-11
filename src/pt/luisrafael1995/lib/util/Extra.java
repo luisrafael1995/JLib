@@ -28,15 +28,14 @@ public final class Extra {
         return bothNull || bothEquals;
     }
 
-    public static void ignoreExceptions(IgnoreExceptions ignore) {
+    public static void ignoreExceptions(IgnoreExceptions ignoreException) {
         try {
-            ignore.ignore();
-        } catch (Exception e) {
-//            e.printStackTrace();
+            ignoreException.run();
+        } catch (Exception ignore) {
         }
     }
 
     public interface IgnoreExceptions {
-        void ignore() throws Exception;
+        void run() throws Exception;
     }
 }

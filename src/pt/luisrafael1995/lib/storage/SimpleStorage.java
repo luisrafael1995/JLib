@@ -41,8 +41,7 @@ public final class SimpleStorage {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             read(filename, baos);
             return baos.toByteArray();
-        } catch (Exception e) {
-            //e.printStackTrace();
+        } catch (Exception ignore) {
             return null;
         }
     }

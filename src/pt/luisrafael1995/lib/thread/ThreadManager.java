@@ -115,7 +115,7 @@ public class ThreadManager {
     private boolean awaitTermination() {
         try {
             return threadPoolExecutor.awaitTermination(7, TimeUnit.SECONDS);
-        } catch (Exception e) {
+        } catch (Exception ignore) {
             return false;
         }
     }

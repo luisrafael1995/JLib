@@ -34,7 +34,7 @@ public final class Regex {
         try {
             int f = flags == null ? 0 : flags.flag;
             return Pattern.compile(regex, f);
-        } catch (Exception e) {
+        } catch (Exception ignore) {
             return Pattern.compile("(?!.*)"); // if it is not something
         }
     }

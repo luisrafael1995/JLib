@@ -17,8 +17,7 @@ public final class GsonUtil {
     public static <T> T getObject(String json, Class<T> c) {
         try {
             return gson.fromJson(json, c);
-        } catch (JsonSyntaxException e) {
-            //e.printStackTrace();
+        } catch (JsonSyntaxException ignore) {
             return null;
         }
     }
