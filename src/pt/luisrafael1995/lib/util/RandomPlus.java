@@ -30,10 +30,10 @@ public class RandomPlus extends Random {
     }
 
     /**
-     * @param from the upper bound (exclusive).  Must be smaller than {@code to}.
-     * @param to   the lower bound (inclusive).  Must be bigger than {@code from}.
+     * @param from the upper bound (inclusive).  Must be smaller than {@code to}.
+     * @param to   the lower bound (exclusive).  Must be bigger than {@code from}.
      * @return the next pseudorandom, uniformly distributed {@code int}
-     * value between {@code to} (inclusive) and {@code from} (exclusive)
+     * value between {@code from} (inclusive) and {@code to} (exclusive)
      * from this random number generator's sequence
      * @throws IllegalArgumentException if from is bigger or equals than to
      */
@@ -75,10 +75,10 @@ public class RandomPlus extends Random {
     }
 
     /**
-     * @param from the upper bound (exclusive).  Must be smaller than {@code to}.
-     * @param to   the lower bound (inclusive).  Must be bigger than {@code from}.
+     * @param from the upper bound (inclusive).  Must be smaller than {@code to}.
+     * @param to   the lower bound (exclusive).  Must be bigger than {@code from}.
      * @return the next pseudorandom, uniformly distributed {@code long}
-     * value between {@code to} (inclusive) and {@code from} (exclusive)
+     * value between {@code from} (inclusive) and {@code to} (exclusive)
      * from this random number generator's sequence
      * @throws IllegalArgumentException if from is bigger or equals than to
      */
@@ -131,10 +131,10 @@ public class RandomPlus extends Random {
     }
 
     /**
-     * @param from the upper bound (exclusive).  Must be smaller than {@code to}.
-     * @param to   the lower bound (inclusive).  Must be bigger than {@code from}.
+     * @param from the upper bound (inclusive).  Must be smaller than {@code to}.
+     * @param to   the lower bound (exclusive).  Must be bigger than {@code from}.
      * @return the next pseudorandom, uniformly distributed {@code float}
-     * value between {@code to} (inclusive) and {@code from} (exclusive)
+     * value between {@code from} (inclusive) and {@code to} (exclusive)
      * from this random number generator's sequence
      * @throws IllegalArgumentException if from is bigger or equals than to
      */
@@ -187,10 +187,10 @@ public class RandomPlus extends Random {
     }
 
     /**
-     * @param from the upper bound (exclusive).  Must be smaller than {@code to}.
-     * @param to   the lower bound (inclusive).  Must be bigger than {@code from}.
+     * @param from the upper bound (inclusive).  Must be smaller than {@code to}.
+     * @param to   the lower bound (exclusive).  Must be bigger than {@code from}.
      * @return the next pseudorandom, uniformly distributed {@code double}
-     * value between {@code to} (inclusive) and {@code from} (exclusive)
+     * value between {@code from} (inclusive) and {@code to} (exclusive)
      * from this random number generator's sequence
      * @throws IllegalArgumentException if from is bigger or equals than to
      */

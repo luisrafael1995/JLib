@@ -61,6 +61,17 @@ public final class CollectionUtil {
         return collection1.containsAll(collection2) && collection2.containsAll(collection1);
     }
 
+    /**
+     * This method will do the same as {@link Map#getOrDefault} except that it will also set the {@code defaultValue}
+     * in case the value is not set yet
+     *
+     * @param map          map to get and/or set the value
+     * @param key          key of the value
+     * @param defaultValue value to get as default and also set
+     * @param <T>          key object type
+     * @param <E>          value object type
+     * @return the same as {@link Map#getOrDefault}
+     */
     public static <T, E> E getOrDefaultSet(@NotNull Map<T, E> map, @NotNull T key, E defaultValue) {
         if (defaultValue != null && !map.containsKey(key)) {
             map.put(key, defaultValue);
