@@ -43,6 +43,10 @@ public final class Regex {
         return getPattern(regex, flags).matcher(input);
     }
 
+    public static String literal(@NotNull String regex) {
+        return Pattern.quote(regex);
+    }
+
     public static String[] findAll(@NotNull String regex, @NotNull CharSequence input) {
         return findAll(regex, input, 0);
     }
@@ -108,6 +112,14 @@ public final class Regex {
 
     public static boolean matches(@NotNull String regex, @NotNull CharSequence input, Flags flags) {
         return getMatcher(regex, input, flags).matches();
+    }
+
+    public static boolean contains(@NotNull String regex, @NotNull CharSequence input) {
+        return contains(regex, input, null);
+    }
+
+    public static boolean contains(@NotNull String regex, @NotNull CharSequence input, Flags flags) {
+        return getMatcher(regex, input, flags).find();
     }
 
     public static String[] split(@NotNull String regex, @NotNull CharSequence input) {
