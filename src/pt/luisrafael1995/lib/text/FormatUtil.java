@@ -14,15 +14,37 @@ public final class FormatUtil {
     }
 
     public static String bytesLength(long bytes) {
-        return bytesLength(bytes, true);
+        return bytesLength(bytes, false);
+    }
+
+    public static String bytesLength(long bytes, boolean si) {
+        return bytesLength(bytes, si, true);
+    }
+
+    public static String bytesLength(long bytes, int decimalPlaces) {
+        return bytesLength(bytes, false, decimalPlaces);
+    }
+
+    public static String bytesLength(long bytes, boolean si, int decimalPlaces) {
+        return bytesLength(bytes, si, decimalPlaces, true);
+    }
+
+    public static String bytesLength(long bytes, boolean si, boolean dynamicDecimalPlaces) {
+        return bytesLength(bytes, si, 2, dynamicDecimalPlaces);
+    }
+
+    public static String bytesLength(long bytes, int decimalPlaces, boolean dynamicDecimalPlaces) {
+        return bytesLength(bytes, false, decimalPlaces, dynamicDecimalPlaces);
     }
 
     /**
-     * @param bytes amount
-     * @param si    true corresponds to bi bytes (1024), false corresponds to regular (1000)
-     * @return string with the amount of bytes
+     * @param bytes                amount to be formatted
+     * @param si                   true corresponds to bi bytes (1024), false corresponds to regular (1000)
+     * @param decimalPlaces        amount of decimal places {@see FormatUtil#numberDecimalFormat(double, int, boolean, boolean)}
+     * @param dynamicDecimalPlaces amount of decimal places depends on absolute value {@see FormatUtil#numberDecimalFormat(double, int, boolean, boolean)}
+     * @return string formatted with the amount of bytes and bytes unit
      */
-    public static String bytesLength(long bytes, boolean si) {
+    public static String bytesLength(long bytes, boolean si, int decimalPlaces, boolean dynamicDecimalPlaces) {
         if (bytes < 0) {
             return bytesLength(0, si);
         }
@@ -38,38 +60,59 @@ public final class FormatUtil {
         exp += bytes >= 1000 * Math.pow(unit, exp) ? 1 : 0; // windows file property look (in case of si = true)
         double valueToBeFormatted = bytes / Math.pow(unit, exp);
 
-        String formattedValue = maxMinDecimalFormat(valueToBeFormatted);
+        String formattedValue = numberDecimal(valueToBeFormatted, decimalPlaces, dynamicDecimalPlaces);
         return String.format("%s %s", formattedValue, scale[exp]);
     }
 
-    public static String maxMinDecimalFormat(double number) {
-        return maxMinDecimalFormat(number, false);
+    public static String numberDecimal(double number) {
+        return numberDecimal(number, false);
     }
 
-    public static String maxMinDecimalFormat(double number, int maxDecimalDigits) {
-        return maxMinDecimalFormat(number, maxDecimalDigits, false);
+    public static String numberDecimal(double number, boolean group) {
+        return numberDecimal(number, group, false);
     }
 
-    public static String maxMinDecimalFormat(double number, boolean group) {
-        return maxMinDecimalFormat(number, 2, group);
+    public static String numberDecimal(double number, int decimalPlaces) {
+        return numberDecimal(number, decimalPlaces, false);
     }
 
-    public static String maxMinDecimalFormat(double number, int maxDecimalDigits, boolean group) {
-        if (maxDecimalDigits < 0) {
-            return maxMinDecimalFormat(number, group);
+    public static String numberDecimal(double number, boolean group, int decimalPlaces) {
+        return numberDecimal(number, group, decimalPlaces, false);
+    }
+
+    public static String numberDecimal(double number, boolean group, boolean dynamicDecimalPlaces) {
+        return numberDecimal(number, group, 3, dynamicDecimalPlaces);
+    }
+
+    public static String numberDecimal(double number, int decimalPlaces, boolean dynamicDecimalPlaces) {
+        return numberDecimal(number, false, decimalPlaces, dynamicDecimalPlaces);
+    }
+
+    /**
+     * @param number               to be formated
+     * @param group                add commas to formatted number
+     * @param decimalPlaces        number of decimal places
+     * @param dynamicDecimalPlaces amount of decimal places will depend on the absolute value
+     * @return formatted number
+     */
+    public static String numberDecimal(double number, boolean group, int decimalPlaces, boolean dynamicDecimalPlaces) {
+        if (decimalPlaces < 0) {
+            return numberDecimal(number, dynamicDecimalPlaces, group);
         }
 
         double tmpNumber = number;
-        int decimalNumbers = maxDecimalDigits;
-        while (tmpNumber >= 10 && decimalNumbers > 0) {
-            decimalNumbers--;
-            tmpNumber /= 10;
+        int decimalNumbers = decimalPlaces;
+        if (dynamicDecimalPlaces) {
+            while (tmpNumber >= 10 && decimalNumbers > 0) {
+                decimalNumbers--;
+                tmpNumber /= 10;
+            }
         }
 
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(decimalNumbers);
         nf.setMinimumFractionDigits(decimalNumbers);
-        nf.setGroupingUsed(true);
+        nf.setGroupingUsed(group);
         nf.setRoundingMode(RoundingMode.FLOOR);
 
         return nf.format(number);
