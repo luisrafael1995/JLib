@@ -1,7 +1,5 @@
 package pt.luisrafael1995.lib.array;
 
-import com.sun.istack.internal.NotNull;
-
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -98,7 +96,6 @@ public class BitArray implements Iterable<Boolean> {
                 return index < length();
             }
 
-            @NotNull
             @Override
             public Boolean next() {
                 return get(index++);

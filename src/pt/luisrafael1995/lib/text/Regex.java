@@ -1,7 +1,5 @@
 package pt.luisrafael1995.lib.text;
 
-import com.sun.istack.internal.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -30,7 +28,7 @@ public final class Regex {
     private Regex() {
     }
 
-    private static Pattern getPattern(@NotNull String regex, Flags flags) {
+    private static Pattern getPattern(String regex, Flags flags) {
         try {
             int f = flags == null ? 0 : flags.flag;
             return Pattern.compile(regex, f);
@@ -39,27 +37,27 @@ public final class Regex {
         }
     }
 
-    private static Matcher getMatcher(@NotNull String regex, @NotNull CharSequence input, Flags flags) {
-        return getPattern(regex, flags).matcher(input);
+    private static Matcher getMatcher(String regex, CharSequence input, Flags flags) {
+        return getPattern(regex, flags).matcher(input == null ? "" : input);
     }
 
-    public static String literal(@NotNull String regex) {
+    public static String literal(String regex) {
         return Pattern.quote(regex);
     }
 
-    public static String[] findAll(@NotNull String regex, @NotNull CharSequence input) {
+    public static String[] findAll(String regex, CharSequence input) {
         return findAll(regex, input, 0);
     }
 
-    public static String[] findAll(@NotNull String regex, @NotNull CharSequence input, int group) {
+    public static String[] findAll(String regex, CharSequence input, int group) {
         return findAll(regex, input, group, null);
     }
 
-    public static String[] findAll(@NotNull String regex, @NotNull CharSequence input, Flags flags) {
+    public static String[] findAll(String regex, CharSequence input, Flags flags) {
         return findAll(regex, input, 0, flags);
     }
 
-    public static String[] findAll(@NotNull String regex, @NotNull CharSequence input, int group, Flags flags) {
+    public static String[] findAll(String regex, CharSequence input, int group, Flags flags) {
         List<String> found = new ArrayList<>();
         Matcher matcher = getMatcher(regex, input, flags);
         while (matcher.find()) {
@@ -68,36 +66,36 @@ public final class Regex {
         return found.toArray(new String[0]);
     }
 
-    public static String find(@NotNull String regex, @NotNull CharSequence input) {
+    public static String find(String regex, CharSequence input) {
         return find(regex, input, 0);
     }
 
-    public static String find(@NotNull String regex, @NotNull CharSequence input, int group) {
+    public static String find(String regex, CharSequence input, int group) {
         return find(regex, input, group, null);
     }
 
-    public static String find(@NotNull String regex, @NotNull CharSequence input, Flags flags) {
+    public static String find(String regex, CharSequence input, Flags flags) {
         return find(regex, input, 0, flags);
     }
 
-    public static String find(@NotNull String regex, @NotNull CharSequence input, int group, Flags flags) {
+    public static String find(String regex, CharSequence input, int group, Flags flags) {
         Matcher matcher = getMatcher(regex, input, flags);
         return matcher.find() ? matcher.group(group) : null;
     }
 
-    public static String findLast(@NotNull String regex, @NotNull CharSequence input) {
+    public static String findLast(String regex, CharSequence input) {
         return findLast(regex, input, 0);
     }
 
-    public static String findLast(@NotNull String regex, @NotNull CharSequence input, int group) {
+    public static String findLast(String regex, CharSequence input, int group) {
         return findLast(regex, input, group, null);
     }
 
-    public static String findLast(@NotNull String regex, @NotNull CharSequence input, Flags flags) {
+    public static String findLast(String regex, CharSequence input, Flags flags) {
         return findLast(regex, input, 0, flags);
     }
 
-    public static String findLast(@NotNull String regex, @NotNull CharSequence input, int group, Flags flags) {
+    public static String findLast(String regex, CharSequence input, int group, Flags flags) {
         String found = null;
         Matcher matcher = getMatcher(regex, input, flags);
         while (matcher.find()) {
@@ -106,59 +104,61 @@ public final class Regex {
         return found;
     }
 
-    public static boolean matches(@NotNull String regex, @NotNull CharSequence input) {
+    public static boolean matches(String regex, CharSequence input) {
         return matches(regex, input, null);
     }
 
-    public static boolean matches(@NotNull String regex, @NotNull CharSequence input, Flags flags) {
+    public static boolean matches(String regex, CharSequence input, Flags flags) {
         return getMatcher(regex, input, flags).matches();
     }
 
-    public static boolean contains(@NotNull String regex, @NotNull CharSequence input) {
+    public static boolean contains(String regex, CharSequence input) {
         return contains(regex, input, null);
     }
 
-    public static boolean contains(@NotNull String regex, @NotNull CharSequence input, Flags flags) {
+    public static boolean contains(String regex, CharSequence input, Flags flags) {
         return getMatcher(regex, input, flags).find();
     }
 
-    public static String[] split(@NotNull String regex, @NotNull CharSequence input) {
+    public static String[] split(String regex, CharSequence input) {
         return split(regex, input, null);
     }
 
-    public static String[] split(@NotNull String regex, @NotNull CharSequence input, Flags flags) {
-        return getPattern(regex, flags).split(input);
+    public static String[] split(String regex, CharSequence input, Flags flags) {
+        return getPattern(regex, flags).split(input == null ? "" : input);
     }
 
-    public static String replace(@NotNull String regex, @NotNull CharSequence input, String replacement) {
+    public static String replace(String regex, CharSequence input, String replacement) {
         return replace(regex, input, replacement, null);
     }
 
-    public static String replace(@NotNull String regex, @NotNull CharSequence input, String replacement, Flags flags) {
-        return getPattern(regex, flags).matcher(input).replaceFirst(replacement);
+    public static String replace(String regex, CharSequence input, String replacement, Flags flags) {
+        return replacement == null ? String.valueOf(input) :
+                getMatcher(regex, input, flags).replaceFirst(replacement);
     }
 
-    public static String replaceAll(@NotNull String regex, @NotNull CharSequence input, String replacement) {
+    public static String replaceAll(String regex, CharSequence input, String replacement) {
         return replaceAll(regex, input, replacement, null);
     }
 
-    public static String replaceAll(@NotNull String regex, @NotNull CharSequence input, String replacement, Flags flags) {
-        return getPattern(regex, flags).matcher(input).replaceAll(replacement);
+    public static String replaceAll(String regex, CharSequence input, String replacement, Flags flags) {
+        return replacement == null ? String.valueOf(input) :
+                getMatcher(regex, input, flags).replaceAll(replacement);
     }
 
-    public static String remove(@NotNull String regex, @NotNull CharSequence input) {
+    public static String remove(String regex, CharSequence input) {
         return remove(regex, input, null);
     }
 
-    public static String remove(@NotNull String regex, @NotNull CharSequence input, Flags flags) {
+    public static String remove(String regex, CharSequence input, Flags flags) {
         return replace(regex, input, "", flags);
     }
 
-    public static String removeAll(@NotNull String regex, @NotNull CharSequence input) {
+    public static String removeAll(String regex, CharSequence input) {
         return removeAll(regex, input, null);
     }
 
-    public static String removeAll(@NotNull String regex, @NotNull CharSequence input, Flags flags) {
+    public static String removeAll(String regex, CharSequence input, Flags flags) {
         return replaceAll(regex, input, "", flags);
     }
 
