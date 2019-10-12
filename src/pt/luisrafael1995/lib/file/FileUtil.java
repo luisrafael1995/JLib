@@ -16,6 +16,7 @@ public final class FileUtil {
 
     // New file format: <file not extension> (<tries>)<file extension>
     private static final String NEW_FILE_FORMAT = "%s (%d)%s";
+    private static final String NEW_FOLDER_FORMAT = "%s (%d)";
 
     private static final String CURRENT_DIR_NAME = ".";
     private static final String DESKTOP_DIR_NAME = "Desktop";
@@ -104,9 +105,13 @@ public final class FileUtil {
             String pos = getExtension(file);
 
             int tries = 0;
-            while (!createFile(file)) {
+            while (!createFile(file) && file.exists()) {
                 String newName = String.format(NEW_FILE_FORMAT, pre, ++tries, pos);
                 file = new File(file.getParentFile(), newName);
+            }
+
+            if (!file.exists()) {
+                file = null;
             }
         }
         return file;
@@ -124,16 +129,30 @@ public final class FileUtil {
         return filename == null ? null : createNewFile(new File(parent, filename));
     }
 
-    // todo: implement or not
-    // todo: = = = = = = = = = = = = = = = = = = = = = =
-    private static boolean createFolder(File folder) {
-        return false;
+    public static boolean createFolder(File folder) {
+        return folder != null && folder.mkdirs();
     }
 
-    private static File createNewFolder(File folder) {
-        return null;
+    public static boolean createFolder(String folderPath) {
+        return folderPath != null && createFolder(new File(folderPath));
     }
-    // todo: = = = = = = = = = = = = = = = = = = = = = =
+
+    public static File createNewFolder(File folder) {
+        if (folder != null) {
+            String name = folder.getName();
+
+            int tries = 0;
+            while (!createFolder(folder) && folder.exists()) {
+                String newName = String.format(NEW_FOLDER_FORMAT, name, ++tries);
+                folder = new File(folder.getParentFile(), newName);
+            }
+
+            if (!folder.exists()) {
+                folder = null;
+            }
+        }
+        return folder;
+    }
 
     public static File moveFile(File src, File dest) {
         return moveFile(src, dest, false);
