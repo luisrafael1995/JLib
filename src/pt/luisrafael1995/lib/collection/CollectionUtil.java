@@ -138,12 +138,61 @@ public final class CollectionUtil {
     public static <T, E> void copyAndConvert(Collection<E> src, Collection<T> dest, ObjectConverter<T, E> converter) {
         if (src != null && dest != null && converter != null) {
             for (E obj : src) {
-                Extra.ignoreExceptions(() -> dest.add(converter.convert(obj)));
+                Extra.ignoreExceptions(() -> {
+                    T converted = converter.convert(obj);
+                    dest.add(converted);
+                });
             }
         }
     }
 
+    public static <T> boolean has(Collection<T> collection, Condition<T> condition) {
+        if (collection != null && condition != null) {
+            for (T obj : collection) {
+                if (Extra.ignoreExceptions(() -> condition.hasCondition(obj))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static <T> void filter(Collection<T> collection, Condition<T> condition) {
+        if (collection != null && condition != null) {
+            List<T> filteredList = filterList(collection, condition);
+            collection.clear();
+            collection.addAll(filteredList);
+        }
+    }
+
+    public static <T> List<T> filterList(Collection<T> collection, Condition<T> condition) {
+        List<T> filteredList = new ArrayList<>();
+        filter(collection, filteredList, condition);
+        return filteredList;
+    }
+
+    public static <T> Set<T> filterSet(Collection<T> collection, Condition<T> condition) {
+        Set<T> filteredSet = new HashSet<>();
+        filter(collection, filteredSet, condition);
+        return filteredSet;
+    }
+
+    public static <T> void filter(Collection<T> src, Collection<T> dst, Condition<T> condition) {
+        if (src != null && dst != null && condition != null) {
+            for (T obj : src) {
+                if (Extra.ignoreExceptions(() -> condition.hasCondition(obj))) {
+                    dst.add(obj);
+                }
+            }
+        }
+    }
+
+
     public interface ObjectConverter<T, E> {
         T convert(E obj);
+    }
+
+    public interface Condition<T> {
+        boolean hasCondition(T obj);
     }
 }

@@ -20,41 +20,48 @@ public final class GsonUtil {
         return null;
     }
 
-    private static <T> T getObject(String json, Type type, GetDefault<T> getDefault) {
+    private static <T> T getRawObjectDef(String json, Type type, GetDefault<T> getDefValue) {
         try {
             return gson.fromJson(json, type);
         } catch (Exception ignore) {
         }
-        return getDefault == null ? null : getDefault.get();
+        return getDefValue == null ? null : getDefValue.get();
     }
 
-    public static <T> T getObject(String json, TypeToken<T> typeToken, GetDefault<T> getDefault) {
-        return getObject(json, typeToken.getType(), getDefault);
+    private static <T> T getRawObject(String json, Type type, T defValue) {
+        return getRawObjectDef(json, type, () -> defValue);
     }
 
-    public static <T> T getObject(String json, TypeToken<T> typeToken, T orDefault) {
-        return getObject(json, typeToken.getType(), () -> orDefault);
+    private static <T> T getRawObject(String json, Type type) {
+        return getRawObject(json, type, null);
+    }
+
+    public static <T> T getObjectDef(String json, TypeToken<T> typeToken, GetDefault<T> getDefValue) {
+        return getRawObjectDef(json, typeToken.getType(), getDefValue);
+    }
+
+    public static <T> T getObject(String json, TypeToken<T> typeToken, T defValue) {
+        return getRawObject(json, typeToken.getType(), defValue);
     }
 
     public static <T> T getObject(String json, TypeToken<T> typeToken) {
-        return getObject(json, typeToken.getType(), null);
+        return getRawObject(json, typeToken.getType());
     }
 
-    public static <T> T getObject(String json, Class<T> type, GetDefault<T> getDefault) {
-        return getObject(json, TypeToken.get(type), getDefault);
+    public static <T> T getObjectDef(String json, Class<T> type, GetDefault<T> getDefValue) {
+        return getRawObjectDef(json, type, getDefValue);
     }
 
-    public static <T> T getObject(String json, Class<T> type, T orDefault) {
-        return getObject(json, TypeToken.get(type), orDefault);
+    public static <T> T getObject(String json, Class<T> type, T defValue) {
+        return getRawObject(json, type, defValue);
     }
 
     public static <T> T getObject(String json, Class<T> type) {
-        return getObject(json, TypeToken.get(type));
+        return getRawObject(json, type);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> T clone(T object) {
-        return object == null ? null : cast(object, (Class<T>) object.getClass());
+        return object == null ? null : getRawObject(toJson(object), object.getClass());
     }
 
     public static <T, E> E cast(T object, Class<E> c) {

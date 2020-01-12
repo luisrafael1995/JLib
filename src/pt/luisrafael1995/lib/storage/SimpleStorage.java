@@ -55,8 +55,8 @@ public final class SimpleStorage {
         if ((file = getFile(filename)) != null) {
             FileUtil.createFile(file);
             Extra.ignoreExceptions(() -> {
-                try (FileOutputStream fos = new FileOutputStream(file, append)) {
-                    IOStreamUtil.copy(is, fos);
+                try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file, append))) {
+                    IOStreamUtil.copy(is, os);
                 }
             });
         }

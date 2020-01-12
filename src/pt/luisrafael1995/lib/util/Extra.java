@@ -28,14 +28,30 @@ public final class Extra {
         return bothNull || bothEquals;
     }
 
-    public static void ignoreExceptions(IgnoreExceptions ignoreException) {
-        try {
-            ignoreException.run();
-        } catch (Exception ignore) {
-        }
+    public static void ignoreExceptions(Runnable runnable) {
+        ignoreExceptions(() -> {
+            runnable.run();
+            return null;
+        });
     }
 
-    public interface IgnoreExceptions {
-        void run() throws Exception;
+    public static <T> T ignoreExceptions(Returnable<T> returnable) {
+        return ignoreExceptions(returnable, null);
+    }
+
+    public static <T> T ignoreExceptions(Returnable<T> returnable, T defValue) {
+        try {
+            return returnable.run();
+        } catch (Throwable ignore) {
+        }
+        return defValue;
+    }
+
+    public interface Runnable {
+        void run() throws Throwable;
+    }
+
+    public interface Returnable<T> {
+        T run() throws Throwable;
     }
 }
