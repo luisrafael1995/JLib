@@ -68,19 +68,26 @@ public final class CollectionUtil {
      *
      * @param map          map to get and/or set the value
      * @param key          key of the value
-     * @param defaultValue value to get as default and also set
+     * @param defaultValue generates value to get as default and also set
      * @param <T>          key object type
      * @param <E>          value object type
      * @return the same as {@link Map#getOrDefault}
      */
-    public static <T, E> E getOrDefaultSet(Map<T, E> map, T key, E defaultValue) {
-        if (map != null) {
-            if (!map.containsKey(key)) {
-                map.put(key, defaultValue);
-            }
-            return map.getOrDefault(key, defaultValue);
+    public static <T, E> E getOrDefaultSet(Map<T, E> map, T key, DefaultValue<E> defaultValue) {
+        if (defaultValue == null) {
+            defaultValue = () -> null;
         }
-        return defaultValue;
+
+        if (map != null && map.containsKey(key)) {
+            return map.get(key);
+        }
+
+        E value = defaultValue.get();
+        if (map != null) {
+            map.put(key, value);
+        }
+
+        return value;
     }
 
     public static <T> boolean hasDuplicatedValues(List<T> list) {
@@ -194,5 +201,9 @@ public final class CollectionUtil {
 
     public interface Condition<T> {
         boolean hasCondition(T obj);
+    }
+
+    public interface DefaultValue<T> {
+        T get();
     }
 }

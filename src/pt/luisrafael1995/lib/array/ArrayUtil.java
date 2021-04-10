@@ -8,8 +8,9 @@ public final class ArrayUtil {
     private ArrayUtil() {
     }
 
-    // = = = COUNT = = =
-
+    //
+    // COUNT
+    //
     public static <T> int count(T[] array, T value) {
         int found = -1;
         if (array != null) {
@@ -208,13 +209,14 @@ public final class ArrayUtil {
         return found;
     }
 
-    // = = = NON DUPLICATED LENGTH = = =
-
-    public static <T> int nonDuplicatedLength(T[] array) {
+    //
+    // COUNT UNIQUE
+    //
+    public static <T> int countUnique(T[] array) {
         return array == null ? -1 : new HashSet<>(Arrays.asList(array)).size();
     }
 
-    public static int nonDuplicatedLength(int[] array) {
+    public static int countUnique(int[] array) {
         if (array != null) {
             Set<Integer> set = new HashSet<>();
             for (int i : array) {
@@ -225,7 +227,7 @@ public final class ArrayUtil {
         return -1;
     }
 
-    public static int nonDuplicatedLength(short[] array) {
+    public static int countUnique(short[] array) {
         if (array != null) {
             Set<Short> set = new HashSet<>();
             for (short s : array) {
@@ -236,7 +238,7 @@ public final class ArrayUtil {
         return -1;
     }
 
-    public static int nonDuplicatedLength(byte[] array) {
+    public static int countUnique(byte[] array) {
         if (array != null) {
             Set<Byte> set = new HashSet<>();
             for (byte b : array) {
@@ -247,7 +249,7 @@ public final class ArrayUtil {
         return -1;
     }
 
-    public static int nonDuplicatedLength(long[] array) {
+    public static int countUnique(long[] array) {
         if (array != null) {
             Set<Long> set = new HashSet<>();
             for (long l : array) {
@@ -258,7 +260,7 @@ public final class ArrayUtil {
         return -1;
     }
 
-    public static int nonDuplicatedLength(double[] array) {
+    public static int countUnique(double[] array) {
         if (array != null) {
             Set<Double> set = new HashSet<>();
             for (double d : array) {
@@ -269,7 +271,7 @@ public final class ArrayUtil {
         return -1;
     }
 
-    public static int nonDuplicatedLength(float[] array) {
+    public static int countUnique(float[] array) {
         if (array != null) {
             Set<Float> set = new HashSet<>();
             for (float f : array) {
@@ -280,7 +282,7 @@ public final class ArrayUtil {
         return -1;
     }
 
-    public static int nonDuplicatedLength(char[] array) {
+    public static int countUnique(char[] array) {
         if (array != null) {
             Set<Character> set = new HashSet<>();
             for (char c : array) {
@@ -291,7 +293,7 @@ public final class ArrayUtil {
         return -1;
     }
 
-    public static int nonDuplicatedLength(boolean[] array) {
+    public static int countUnique(boolean[] array) {
         if (array != null) {
             Set<Boolean> set = new HashSet<>();
             for (boolean b : array) {
@@ -302,8 +304,9 @@ public final class ArrayUtil {
         return -1;
     }
 
-    // = = = INDEX OF = = =
-
+    //
+    // INDEX OF
+    //
     public static <T> int indexOf(T[] array, T value) {
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
@@ -502,8 +505,9 @@ public final class ArrayUtil {
         return -1;
     }
 
-    // = = = INDEXES OF = = =
-
+    //
+    // INDEXES OF
+    //
     public static <T> int[] indexesOf(T[] array, T value) {
         int[] indexes = null;
         if (array != null) {
@@ -756,8 +760,9 @@ public final class ArrayUtil {
         return indexes;
     }
 
-    // = = = LAST INDEX OF = = =
-
+    //
+    // LAST INDEX OF
+    //
     public static <T> int lastIndexOf(T[] array, T value) {
         if (array != null) {
             for (int i = array.length - 1; i >= 0; i--) {
@@ -956,8 +961,9 @@ public final class ArrayUtil {
         return -1;
     }
 
-    // = = = EQUALS = = =
-
+    //
+    // EQUALS
+    //
     public static <T> boolean equals(T[] array1, T[] array2) {
         boolean bothNull = array1 == null && array2 == null;
         boolean bothNotNull = array1 != null && array2 != null;
@@ -1174,8 +1180,9 @@ public final class ArrayUtil {
         return bothNull || bothEquals;
     }
 
-    // = = = CONTAINS = = =
-
+    //
+    // CONTAINS
+    //
     public static <T> boolean contains(T[] array, T value) {
         return indexOf(array, value) != -1;
     }
@@ -1212,8 +1219,9 @@ public final class ArrayUtil {
         return indexOf(array, value) != -1;
     }
 
-    // = = = REPLACE = = =
-
+    //
+    // REPLACE
+    //
     public static <T> void replace(T[] array, T oldValue, T newValue) {
         if (array != null && !Extra.equals(oldValue, newValue)) {
             int index = indexOf(array, oldValue);
@@ -1295,8 +1303,9 @@ public final class ArrayUtil {
         }
     }
 
-    // = = = REPLACE ALL = = =
-
+    //
+    // REPLACE ALL
+    //
     public static <T> void replaceAll(T[] array, T oldValue, T newValue) {
         if (array != null && !Extra.equals(oldValue, newValue)) {
             for (int index : indexesOf(array, oldValue)) {
@@ -1369,8 +1378,9 @@ public final class ArrayUtil {
         }
     }
 
-    // = = = REPLACE LAST = = =
-
+    //
+    // REPLACE LAST
+    //
     public static <T> void replaceLast(T[] array, T oldValue, T newValue) {
         if (array != null && !Extra.equals(oldValue, newValue)) {
             int index = lastIndexOf(array, oldValue);
@@ -1452,144 +1462,100 @@ public final class ArrayUtil {
         }
     }
 
-    // = = = TO STRING = = =
-
-    public static <T> String toString(T[] array) {
-        return Arrays.toString(array);
-    }
-
-    public static <T> String toString(T[][] array) {
-        if (array != null) {
-            String[] toString = new String[array.length];
-            for (int i = 0; i < array.length; i++) {
-                toString[i] = toString(array[i]);
-            }
-            return toString(toString);
+    //
+    // AS LIST
+    //
+    public static <T> List<T> asList(T[] values) {
+        List<T> list = new ArrayList<>();
+        if (values != null) {
+            list.addAll(Arrays.asList(values));
         }
-        return null;
+        return list;
     }
 
-    public static String toString(int[] array) {
-        return Arrays.toString(array);
-    }
-
-    public static String toString(int[][] array) {
-        if (array != null) {
-            String[] toString = new String[array.length];
-            for (int i = 0; i < array.length; i++) {
-                toString[i] = toString(array[i]);
+    public static List<Integer> asList(int[] values) {
+        Integer[] array = new Integer[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
             }
-            return toString(toString);
         }
-        return null;
+        return asList(array);
     }
 
-    public static String toString(short[] array) {
-        return Arrays.toString(array);
-    }
-
-    public static String toString(short[][] array) {
-        if (array != null) {
-            String[] toString = new String[array.length];
-            for (int i = 0; i < array.length; i++) {
-                toString[i] = toString(array[i]);
+    public static List<Short> asList(short[] values) {
+        Short[] array = new Short[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
             }
-            return toString(toString);
         }
-        return null;
+        return asList(array);
     }
 
-    public static String toString(byte[] array) {
-        return Arrays.toString(array);
-    }
-
-    public static String toString(byte[][] array) {
-        if (array != null) {
-            String[] toString = new String[array.length];
-            for (int i = 0; i < array.length; i++) {
-                toString[i] = toString(array[i]);
+    public static List<Byte> asList(byte[] values) {
+        Byte[] array = new Byte[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
             }
-            return toString(toString);
         }
-        return null;
+        return asList(array);
     }
 
-    public static String toString(long[] array) {
-        return Arrays.toString(array);
-    }
-
-    public static String toString(long[][] array) {
-        if (array != null) {
-            String[] toString = new String[array.length];
-            for (int i = 0; i < array.length; i++) {
-                toString[i] = toString(array[i]);
+    public static List<Long> asList(long[] values) {
+        Long[] array = new Long[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
             }
-            return toString(toString);
         }
-        return null;
+        return asList(array);
     }
 
-    public static String toString(double[] array) {
-        return Arrays.toString(array);
-    }
-
-    public static String toString(double[][] array) {
-        if (array != null) {
-            String[] toString = new String[array.length];
-            for (int i = 0; i < array.length; i++) {
-                toString[i] = toString(array[i]);
+    public static List<Double> asList(double[] values) {
+        Double[] array = new Double[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
             }
-            return toString(toString);
         }
-        return null;
+        return asList(array);
     }
 
-    public static String toString(float[] array) {
-        return Arrays.toString(array);
-    }
-
-    public static String toString(float[][] array) {
-        if (array != null) {
-            String[] toString = new String[array.length];
-            for (int i = 0; i < array.length; i++) {
-                toString[i] = toString(array[i]);
+    public static List<Float> asList(float[] values) {
+        Float[] array = new Float[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
             }
-            return toString(toString);
         }
-        return null;
+        return asList(array);
     }
 
-    public static String toString(char[] array) {
-        return Arrays.toString(array);
-    }
-
-    public static String toString(char[][] array) {
-        if (array != null) {
-            String[] toString = new String[array.length];
-            for (int i = 0; i < array.length; i++) {
-                toString[i] = toString(array[i]);
+    public static List<Character> asList(char[] values) {
+        Character[] array = new Character[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
             }
-            return toString(toString);
         }
-        return null;
+        return asList(array);
     }
 
-    public static String toString(boolean[] array) {
-        return Arrays.toString(array);
-    }
-
-    public static String toString(boolean[][] array) {
-        if (array != null) {
-            String[] toString = new String[array.length];
-            for (int i = 0; i < array.length; i++) {
-                toString[i] = toString(array[i]);
+    public static List<Boolean> asList(boolean[] values) {
+        Boolean[] array = new Boolean[values == null ? 0 : values.length];
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                array[i] = values[i];
             }
-            return toString(toString);
         }
-        return null;
+        return asList(array);
     }
 
-    // = = = COPY = = =
+    //
+    // COPY
+    //
 
     /**
      * @return copied amount
@@ -1769,93 +1735,5 @@ public final class ArrayUtil {
             return realLength;
         }
         return -1;
-    }
-
-    public static <T> List<T> asList(T[] values) {
-        List<T> list = new ArrayList<>();
-        if (values != null) {
-            list.addAll(Arrays.asList(values));
-        }
-        return list;
-    }
-
-    public static List<Integer> asList(int[] values) {
-        Integer[] array = new Integer[values == null ? 0 : values.length];
-        if (values != null) {
-            for (int i = 0; i < values.length; i++) {
-                array[i] = values[i];
-            }
-        }
-        return asList(array);
-    }
-
-    public static List<Short> asList(short[] values) {
-        Short[] array = new Short[values == null ? 0 : values.length];
-        if (values != null) {
-            for (int i = 0; i < values.length; i++) {
-                array[i] = values[i];
-            }
-        }
-        return asList(array);
-    }
-
-    public static List<Byte> asList(byte[] values) {
-        Byte[] array = new Byte[values == null ? 0 : values.length];
-        if (values != null) {
-            for (int i = 0; i < values.length; i++) {
-                array[i] = values[i];
-            }
-        }
-        return asList(array);
-    }
-
-    public static List<Long> asList(long[] values) {
-        Long[] array = new Long[values == null ? 0 : values.length];
-        if (values != null) {
-            for (int i = 0; i < values.length; i++) {
-                array[i] = values[i];
-            }
-        }
-        return asList(array);
-    }
-
-    public static List<Double> asList(double[] values) {
-        Double[] array = new Double[values == null ? 0 : values.length];
-        if (values != null) {
-            for (int i = 0; i < values.length; i++) {
-                array[i] = values[i];
-            }
-        }
-        return asList(array);
-    }
-
-    public static List<Float> asList(float[] values) {
-        Float[] array = new Float[values == null ? 0 : values.length];
-        if (values != null) {
-            for (int i = 0; i < values.length; i++) {
-                array[i] = values[i];
-            }
-        }
-        return asList(array);
-    }
-
-    public static List<Character> asList(char[] values) {
-        Character[] array = new Character[values == null ? 0 : values.length];
-        if (values != null) {
-            for (int i = 0; i < values.length; i++) {
-                array[i] = values[i];
-            }
-        }
-        return asList(array);
-    }
-
-    public static List<Boolean> asList(boolean[] values) {
-        Boolean[] array = new Boolean[values == null ? 0 : values.length];
-        if (values != null) {
-            for (int i = 0; i < values.length; i++) {
-                array[i] = values[i];
-            }
-        }
-        return asList(array);
     }
 }

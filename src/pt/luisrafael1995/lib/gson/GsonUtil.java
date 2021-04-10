@@ -1,59 +1,46 @@
 package pt.luisrafael1995.lib.gson;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
 public final class GsonUtil {
 
-    private static final Gson gson = new Gson();
+    private static final Gson GSON = new GsonBuilder()
+            .disableHtmlEscaping()
+            .create();
 
     private GsonUtil() {
     }
 
     public static <T> String toJson(T object) {
         try {
-            return gson.toJson(object);
+            return GSON.toJson(object);
         } catch (Exception ignore) {
         }
         return null;
     }
 
-    private static <T> T getRawObjectDef(String json, Type type, GetDefault<T> getDefValue) {
+    private static <T> T getRawObject(String json, Type type, GetDefault<T> getDefault) {
         try {
-            return gson.fromJson(json, type);
+            return GSON.fromJson(json, type);
         } catch (Exception ignore) {
         }
-        return getDefValue == null ? null : getDefValue.get();
-    }
-
-    private static <T> T getRawObject(String json, Type type, T defValue) {
-        return getRawObjectDef(json, type, () -> defValue);
+        return getDefault == null ? null : getDefault.get();
     }
 
     private static <T> T getRawObject(String json, Type type) {
         return getRawObject(json, type, null);
     }
 
-    public static <T> T getObjectDef(String json, TypeToken<T> typeToken, GetDefault<T> getDefValue) {
-        return getRawObjectDef(json, typeToken.getType(), getDefValue);
-    }
-
-    public static <T> T getObject(String json, TypeToken<T> typeToken, T defValue) {
-        return getRawObject(json, typeToken.getType(), defValue);
-    }
-
     public static <T> T getObject(String json, TypeToken<T> typeToken) {
         return getRawObject(json, typeToken.getType());
     }
 
-    public static <T> T getObjectDef(String json, Class<T> type, GetDefault<T> getDefValue) {
-        return getRawObjectDef(json, type, getDefValue);
-    }
-
-    public static <T> T getObject(String json, Class<T> type, T defValue) {
-        return getRawObject(json, type, defValue);
+    public static <T> T getObject(String json, Class<T> type, GetDefault<T> getDefValue) {
+        return getRawObject(json, type, getDefValue);
     }
 
     public static <T> T getObject(String json, Class<T> type) {

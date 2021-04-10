@@ -64,24 +64,16 @@ public final class FileUtil {
 
     public synchronized static boolean createFile(File file) {
         if (file != null) {
-            List<File> createdFolders = new ArrayList<>();
-            File parent = file;
-            while ((parent = parent.getParentFile()) != null && !parent.exists()) {
-                createdFolders.add(0, parent);
-            }
-
-            for (File folder : createdFolders) {
-                if (!folder.mkdir()) {
-                    break;
+            File parent = file.getParentFile();
+            if (parent != null) {
+                if (!parent.exists() && !parent.mkdirs()) {
+                    return false;
                 }
             }
 
             try {
                 return file.createNewFile();
             } catch (Exception ignore) {
-                for (File folder : createdFolders) {
-                    delete(folder);
-                }
             }
         }
         return false;
@@ -230,8 +222,8 @@ public final class FileUtil {
     }
 
     public static String filterFilename(String filename, String invalidCharsReplace) {
-        String replacement = Optional.of(invalidCharsReplace).orElse("");
-        return Optional.of(filename).map(s -> s.replaceAll(INVALID_FILENAME_CHARS_REGEX, replacement)).orElse(null);
+        String replacement = invalidCharsReplace == null ? "" : invalidCharsReplace;
+        return filename == null ? null : filename.replaceAll(INVALID_FILENAME_CHARS_REGEX, replacement);
     }
 
     public static File filterCaseSensitiveFile(File file) {
