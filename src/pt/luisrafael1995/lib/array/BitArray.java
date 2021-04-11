@@ -88,7 +88,7 @@ public class BitArray implements Iterable<Boolean> {
 
     @Override
     public Iterator<Boolean> iterator() {
-        return new Iterator<>() {
+        return new Iterator<Boolean>() {
             int index = 0;
 
             @Override
