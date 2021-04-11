@@ -16,7 +16,7 @@ public class BitArray implements Iterable<Boolean> {
     private static final int RESERVED_BITS = 6;
     private static final long RESERVED_MASK = 0x3fL;
 
-    private long[] array;
+    private final long[] array;
     private transient long length = -1;
 
     public BitArray(long size) {
@@ -30,8 +30,8 @@ public class BitArray implements Iterable<Boolean> {
         long arraySize = rawSize + (semiSize + RESERVED_BITS > Long.SIZE ? 2 : 1);
 
         if (arraySize > Integer.MAX_VALUE) {
-            long maximunSize = Integer.SIZE * ((long) Long.SIZE) - RESERVED_BITS;
-            throw new IllegalArgumentException(String.format(MAXIMUM_SIZE_REACHED, size, maximunSize));
+            long maxSize = Integer.SIZE * ((long) Long.SIZE) - RESERVED_BITS;
+            throw new IllegalArgumentException(String.format(MAXIMUM_SIZE_REACHED, size, maxSize));
         }
 
         array = new long[(int) arraySize];
@@ -88,7 +88,7 @@ public class BitArray implements Iterable<Boolean> {
 
     @Override
     public Iterator<Boolean> iterator() {
-        return new Iterator<Boolean>() {
+        return new Iterator<>() {
             int index = 0;
 
             @Override
