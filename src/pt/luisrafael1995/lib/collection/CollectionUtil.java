@@ -1,7 +1,7 @@
 package pt.luisrafael1995.lib.collection;
 
+import pt.luisrafael1995.lib.random.RandomPlus;
 import pt.luisrafael1995.lib.util.Extra;
-import pt.luisrafael1995.lib.util.RandomPlus;
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ public final class CollectionUtil {
     private CollectionUtil() {
     }
 
-    private static <T> T getRandom(List<T> list) {
+    private static <E> E getRandom(List<E> list) {
         if (list != null && list.size() != 0) {
             int index = RandomPlus.getInstance().nextInt(list.size());
             return list.get(index);
@@ -18,30 +18,30 @@ public final class CollectionUtil {
         return null;
     }
 
-    public static <T> T getRandom(Collection<T> collection) {
-        List<T> list = null;
+    public static <E> E getRandom(Collection<E> collection) {
+        List<E> list = null;
         if (collection != null) {
             boolean cast = collection instanceof List;
-            list = cast ? (List<T>) collection : new ArrayList<>(collection);
+            list = cast ? (List<E>) collection : new ArrayList<>(collection);
         }
         return getRandom(list);
     }
 
-    public static <T> T getLast(List<T> list) {
+    public static <E> E getLast(List<E> list) {
         if (list != null && list.size() > 0) {
             return list.get(list.size() - 1);
         }
         return null;
     }
 
-    public static <T> T getFirst(List<T> list) {
+    public static <E> E getFirst(List<E> list) {
         if (list != null && list.size() > 0) {
             return list.get(0);
         }
         return null;
     }
 
-    public static <T> boolean addUnique(Collection<T> collection, T object) {
+    public static <E> boolean addUnique(Collection<E> collection, E object) {
         if (collection != null && !collection.contains(object)) {
             collection.add(object);
             return true;
@@ -49,15 +49,15 @@ public final class CollectionUtil {
         return false;
     }
 
-    public static <T> boolean addUnique(Collection<T> collection, Collection<T> toAdd) {
+    public static <E> boolean addUnique(Collection<E> collection, Collection<E> toAdd) {
         boolean added = false;
-        for (T object : toAdd) {
+        for (E object : toAdd) {
             added |= addUnique(collection, object);
         }
         return added;
     }
 
-    public static <T> boolean containsAllEach(Collection<T> collection1, Collection<T> collection2) {
+    public static <E> boolean containsAllEach(Collection<E> collection1, Collection<E> collection2) {
         return collection1 != null && collection2 != null && collection1.containsAll(collection2) &&
                 collection2.containsAll(collection1);
     }
@@ -69,11 +69,11 @@ public final class CollectionUtil {
      * @param map          map to get and/or set the value
      * @param key          key of the value
      * @param defaultValue generates value to get as default and also set
-     * @param <T>          key object type
-     * @param <E>          value object type
+     * @param <K>          key object type
+     * @param <V>          value object type
      * @return the same as {@link Map#getOrDefault}
      */
-    public static <T, E> E getOrDefaultSet(Map<T, E> map, T key, DefaultValue<E> defaultValue) {
+    public static <K, V> V getOrDefaultSet(Map<K, V> map, K key, DefaultValue<V> defaultValue) {
         if (defaultValue == null) {
             defaultValue = () -> null;
         }
@@ -82,7 +82,7 @@ public final class CollectionUtil {
             return map.get(key);
         }
 
-        E value = defaultValue.get();
+        V value = defaultValue.get();
         if (map != null) {
             map.put(key, value);
         }
@@ -90,11 +90,11 @@ public final class CollectionUtil {
         return value;
     }
 
-    public static <T> boolean hasDuplicatedValues(List<T> list) {
+    public static <E> boolean hasDuplicatedValues(List<E> list) {
         if (list != null) {
-            for (T t : list) {
-                int firstIndex = list.indexOf(t);
-                int lastIndex = list.lastIndexOf(t);
+            for (E e : list) {
+                int firstIndex = list.indexOf(e);
+                int lastIndex = list.lastIndexOf(e);
                 if (firstIndex != lastIndex) {
                     return true;
                 }
@@ -103,11 +103,11 @@ public final class CollectionUtil {
         return false;
     }
 
-    public static <T> void removeDuplicatedValues(List<T> list) {
+    public static <E> void removeDuplicatedValues(List<E> list) {
         if (list != null) {
             for (int i = list.size() - 1; i >= 0; i--) {
-                T t = list.get(i);
-                int index = list.indexOf(t);
+                E e = list.get(i);
+                int index = list.indexOf(e);
                 if (index != i) {
                     list.remove(i);
                 }
@@ -115,47 +115,85 @@ public final class CollectionUtil {
         }
     }
 
-    public static <T, E> List<T> convertList(List<E> list, ObjectConverter<T, E> converter) {
+    public static <T, E> List<T> convertList(Collection<E> collection, ObjectConverter<T, E> converter) {
         List<T> converted = null;
-        if (list != null) {
+        if (collection != null) {
             converted = new ArrayList<>();
-            copyAndConvert(list, converted, converter);
+            convert(collection, converted, converter);
         }
         return converted;
     }
 
-    public static <T, E> Set<T> convertSet(Set<E> set, ObjectConverter<T, E> converter) {
+    public static <T, E> Set<T> convertSet(Collection<E> collection, ObjectConverter<T, E> converter) {
         Set<T> converted = null;
-        if (set != null) {
-            set = new HashSet<>();
-            copyAndConvert(set, converted, converter);
+        if (collection != null) {
+            converted = new HashSet<>();
+            convert(collection, converted, converter);
         }
         return converted;
     }
 
     /**
-     * Copies and convert all objects from collection {@code src} into collection {@code dest}
+     * Converts all objects from src {@code src} into dst {@code dst}
      *
-     * @param src       collection of original objects
-     * @param dest      collectoin to add converted objects
+     * @param src       src of original objects
+     * @param dst       dst to add converted objects
      * @param converter interface to convert objects
      * @param <T>       converted object type
      * @param <E>       original object type
      */
-    public static <T, E> void copyAndConvert(Collection<E> src, Collection<T> dest, ObjectConverter<T, E> converter) {
-        if (src != null && dest != null && converter != null) {
+    public static <T, E> void convert(Collection<E> src, Collection<T> dst, ObjectConverter<T, E> converter) {
+        if (src != null && dst != null && converter != null) {
             for (E obj : src) {
                 Extra.ignoreExceptions(() -> {
                     T converted = converter.convert(obj);
-                    dest.add(converted);
+                    dst.add(converted);
                 });
             }
         }
     }
 
-    public static <T> boolean has(Collection<T> collection, Condition<T> condition) {
+    public static <T, E> List<T> convertListFlat(Collection<E> collection, ObjectConverterFlat<T, E> converter) {
+        List<T> converted = null;
+        if (collection != null) {
+            converted = new ArrayList<>();
+            convertFlat(collection, converted, converter);
+        }
+        return converted;
+    }
+
+    public static <T, E> Set<T> convertSetFlat(Collection<E> collection, ObjectConverterFlat<T, E> converter) {
+        Set<T> converted = null;
+        if (collection != null) {
+            converted = new HashSet<>();
+            convertFlat(collection, converted, converter);
+        }
+        return converted;
+    }
+
+    /**
+     * Converts and flats a dst of objects from src {@code src} into dst {@code dst}
+     *
+     * @param src       src of original objects
+     * @param dst       dst to add converted objects
+     * @param converter interface to convert objects
+     * @param <T>       converted object type
+     * @param <E>       original object type
+     */
+    public static <T, E> void convertFlat(Collection<E> src, Collection<T> dst, ObjectConverterFlat<T, E> converter) {
+        if (src != null && dst != null && converter != null) {
+            for (E obj : src) {
+                Extra.ignoreExceptions(() -> {
+                    Collection<T> converted = converter.convert(obj);
+                    dst.addAll(converted);
+                });
+            }
+        }
+    }
+
+    public static <E> boolean has(Collection<E> collection, Condition<E> condition) {
         if (collection != null && condition != null) {
-            for (T obj : collection) {
+            for (E obj : collection) {
                 if (Extra.ignoreExceptions(() -> condition.hasCondition(obj))) {
                     return true;
                 }
@@ -164,29 +202,40 @@ public final class CollectionUtil {
         return false;
     }
 
-    public static <T> void filter(Collection<T> collection, Condition<T> condition) {
+    public static <E> E find(Collection<E> collection, Condition<E> condition) {
         if (collection != null && condition != null) {
-            List<T> filteredList = filterList(collection, condition);
+            for (E obj : collection) {
+                if (Extra.ignoreExceptions(() -> condition.hasCondition(obj))) {
+                    return obj;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static <E> void filter(Collection<E> collection, Condition<E> condition) {
+        if (collection != null && condition != null) {
+            List<E> copy = new ArrayList<>(collection);
             collection.clear();
-            collection.addAll(filteredList);
+            filter(copy, collection, condition);
         }
     }
 
-    public static <T> List<T> filterList(Collection<T> collection, Condition<T> condition) {
-        List<T> filteredList = new ArrayList<>();
+    public static <E> List<E> filterList(Collection<E> collection, Condition<E> condition) {
+        List<E> filteredList = new ArrayList<>();
         filter(collection, filteredList, condition);
         return filteredList;
     }
 
-    public static <T> Set<T> filterSet(Collection<T> collection, Condition<T> condition) {
-        Set<T> filteredSet = new HashSet<>();
+    public static <E> Set<E> filterSet(Collection<E> collection, Condition<E> condition) {
+        Set<E> filteredSet = new HashSet<>();
         filter(collection, filteredSet, condition);
         return filteredSet;
     }
 
-    public static <T> void filter(Collection<T> src, Collection<T> dst, Condition<T> condition) {
+    public static <E> void filter(Collection<E> src, Collection<E> dst, Condition<E> condition) {
         if (src != null && dst != null && condition != null) {
-            for (T obj : src) {
+            for (E obj : src) {
                 if (Extra.ignoreExceptions(() -> condition.hasCondition(obj))) {
                     dst.add(obj);
                 }
@@ -194,16 +243,32 @@ public final class CollectionUtil {
         }
     }
 
+    public static <E> int count(Collection<E> collection, Condition<E> condition) {
+        int count = 0;
+        if (collection != null && condition != null) {
+            for (E obj : collection) {
+                if (Extra.ignoreExceptions(() -> condition.hasCondition(obj))) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+
+    public interface DefaultValue<E> {
+        E get();
+    }
 
     public interface ObjectConverter<T, E> {
         T convert(E obj);
     }
 
-    public interface Condition<T> {
-        boolean hasCondition(T obj);
+    public interface ObjectConverterFlat<T, E> {
+        Collection<T> convert(E obj);
     }
 
-    public interface DefaultValue<T> {
-        T get();
+    public interface Condition<E> {
+        boolean hasCondition(E obj);
     }
 }

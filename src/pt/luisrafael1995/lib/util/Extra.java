@@ -26,6 +26,7 @@ public final class Extra {
         boolean bothEquals = bothNotNull && obj1.equals(obj2) && obj2.equals(obj1);
 
         return bothNull || bothEquals;
+//        return obj1 == null ? obj2 == null : obj1.equals(obj2);
     }
 
     public static void ignoreExceptions(Runnable runnable) {

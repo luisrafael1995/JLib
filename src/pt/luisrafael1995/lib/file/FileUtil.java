@@ -1,16 +1,12 @@
 package pt.luisrafael1995.lib.file;
 
+import pt.luisrafael1995.lib.collection.CollectionUtil;
 import pt.luisrafael1995.lib.text.StringUtil;
 import pt.luisrafael1995.lib.util.Extra;
-import pt.luisrafael1995.lib.util.RandomPlus;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 public final class FileUtil {
 
@@ -175,6 +171,43 @@ public final class FileUtil {
         }
     }
 
+    private static void listFiles(List<File> output, File file, int depth, boolean includeDirs) {
+        if (file == null || !file.exists() || !file.isDirectory() || depth == 0) {
+            return;
+        }
+
+        File[] files = file.listFiles();
+        if (files == null) {
+            return;
+        }
+
+        for (File subFile : files) {
+            if (includeDirs || !subFile.isDirectory()) {
+                output.add(subFile);
+            }
+            listFiles(output, subFile, depth - 1, includeDirs);
+        }
+    }
+
+    public static List<File> listFiles(File file, int depth, boolean includeDirs) {
+        List<File> filesList = new ArrayList<>();
+        listFiles(filesList, file, depth, includeDirs);
+//        Collections.sort(filesList);
+        return filesList;
+    }
+
+    public static List<File> listFiles(File file, int depth) {
+        return listFiles(file, depth, true);
+    }
+
+    public static List<File> listFiles(File file, boolean includeDirs) {
+        return listFiles(file, 1, includeDirs);
+    }
+
+    public static List<File> listFiles(File file) {
+        return listFiles(file, true);
+    }
+
     public static File currentDir() {
         return filterCaseSensitiveFile(new File(CURRENT_DIR_NAME));
     }
@@ -196,20 +229,11 @@ public final class FileUtil {
     }
 
     public static boolean delete(File toDelete) {
-        return toDelete == null || delete(toDelete.toPath());
-    }
-
-    private static boolean delete(Path toDelete) {
-        Extra.ignoreExceptions(() -> {
-            Files.walk(toDelete).sorted(Comparator.reverseOrder())
-                    .forEach(path -> {
-                        Extra.ignoreExceptions(() -> {
-                            Files.deleteIfExists(path);
-                        });
-                    });
-        });
-
-        return !Files.exists(toDelete);
+        List<File> fileList = listFiles(toDelete);
+        for (File file : fileList) {
+            delete(file);
+        }
+        return toDelete.delete();
     }
 
     public static void deleteIfEmpty(File dir) {
@@ -232,10 +256,10 @@ public final class FileUtil {
 
     private static File filterCaseSensitiveFile(File file, boolean isDirectory, List<String> ignoreNames) {
         if (file == null) {
-            return file;
+            return null;
         }
 
-        String filename = file.getName();
+        final String filename = file.getName();
         File parent = filterCaseSensitiveFile(file.getParentFile(), true, null);
 
         if (parent != null && parent.exists() && parent.isDirectory()) {
@@ -244,12 +268,14 @@ public final class FileUtil {
 
             do {
                 try {
-                    Optional<String> newFilename = Files.list(parent.toPath()).map(path -> path.toFile().getName())
-                            .filter(s -> StringUtil.equalsIgnoreCase(filename, s) && (ignoreNames == null || !ignoreNames.contains(s)))
-                            .min((o1, o2) -> RandomPlus.getInstance().nextInt(-1, 1));
+                    List<File> files = listFiles(parent);
+                    List<String> fileNames = CollectionUtil.convertList(files, File::getName);
+                    String newFilename = CollectionUtil.find(fileNames, name ->
+                            StringUtil.equalsIgnoreCase(filename, name) &&
+                                    (ignoreNames == null || !ignoreNames.contains(name)));
 
-                    if (newFilename.isPresent()) {
-                        File newFile = new File(parent, newFilename.get());
+                    if (newFilename != null) {
+                        File newFile = new File(parent, newFilename);
                         if (!isDirectory || newFile.isDirectory()) {
                             return newFile;
                         }

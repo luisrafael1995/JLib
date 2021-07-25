@@ -3,7 +3,6 @@ package pt.luisrafael1995.lib.storage;
 import pt.luisrafael1995.lib.file.FileUtil;
 import pt.luisrafael1995.lib.gson.GsonUtil;
 import pt.luisrafael1995.lib.stream.IOStreamUtil;
-import pt.luisrafael1995.lib.text.StringUtil;
 import pt.luisrafael1995.lib.util.Extra;
 
 import java.io.*;
@@ -47,7 +46,7 @@ public final class SimpleStorage {
     }
 
     public <T> T read(String filename, Class<T> c) {
-        return GsonUtil.getObject(StringUtil.toString(read(filename)), c);
+        return GsonUtil.getObject(getFile(filename), c);
     }
 
     public void write(String filename, InputStream is, boolean append) {
@@ -79,7 +78,11 @@ public final class SimpleStorage {
     }
 
     public <T> void write(String filename, T obj) {
-        write(filename, StringUtil.getBytes(GsonUtil.toJson(obj)));
+        File file;
+        if ((file = getFile(filename)) != null) {
+            FileUtil.createFile(file);
+            GsonUtil.toJson(obj, file);
+        }
     }
 
     public void delete(String filename) {

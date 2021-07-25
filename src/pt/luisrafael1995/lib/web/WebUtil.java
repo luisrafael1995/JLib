@@ -1,32 +1,27 @@
 package pt.luisrafael1995.lib.web;
 
+import okhttp3.*;
+import pt.luisrafael1995.lib.gson.GsonUtil;
+import pt.luisrafael1995.lib.stream.IOStreamUtil;
+import pt.luisrafael1995.lib.text.StringUtil;
+import pt.luisrafael1995.lib.util.Wrapper;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Call;
-import okhttp3.Headers;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import pt.luisrafael1995.lib.gson.GsonUtil;
-import pt.luisrafael1995.lib.stream.IOStreamUtil;
-import pt.luisrafael1995.lib.text.StringUtil;
-import pt.luisrafael1995.lib.util.ObjectWrapper;
-
 public final class WebUtil {
 
-    private static final String TAG = "WebUtil";
+    private static final int CONNECT_TIMEOUT = 30;
+    private static final int READ_TIMEOUT = 15;
+    private static final int WRITE_TIMEOUT = 15;
 
     protected static final OkHttpClient HTTP_CLIENT = new OkHttpClient.Builder()
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(7, TimeUnit.SECONDS)
-            .writeTimeout(7, TimeUnit.SECONDS)
+            .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
             .followSslRedirects(true)
             .followRedirects(true)
@@ -164,7 +159,7 @@ public final class WebUtil {
     }
 
     public static byte[] getResponse(Request request) {
-        ObjectWrapper<byte[]> response = new ObjectWrapper<>();
+        Wrapper<byte[]> response = new Wrapper<>();
         callbackStream(request, is -> {
             try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                 IOStreamUtil.copy(is, baos);

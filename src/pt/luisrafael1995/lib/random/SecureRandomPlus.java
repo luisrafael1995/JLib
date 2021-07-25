@@ -1,15 +1,15 @@
-package pt.luisrafael1995.lib.util;
+package pt.luisrafael1995.lib.random;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
-public class RandomPlus extends Random {
+public class SecureRandomPlus extends SecureRandom {
 
     private static final String BadBound = "bound must be positive";
     private static final String BadFromToRange = "'to' must be greater then 'from'";
 
-    private static final RandomPlus INSTANCE = new RandomPlus();
+    private static final SecureRandomPlus INSTANCE = new SecureRandomPlus();
 
-    public static RandomPlus getInstance() {
+    public static SecureRandomPlus getInstance() {
         return INSTANCE;
     }
 

@@ -107,4 +107,13 @@ public class BitArray implements Iterable<Boolean> {
     public boolean equals(Object o) {
         return o instanceof BitArray && Arrays.equals(array, ((BitArray) o).array);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (boolean b : this) {
+            builder.append(b ? "1" : "0");
+        }
+        return builder.toString();
+    }
 }
